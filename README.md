@@ -1,1 +1,1 @@
-# EulerPy
+# ProjectEulerPy
