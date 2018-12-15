@@ -15,7 +15,10 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbosity', type=int, default=0, help='verbosity level for debug')
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO)
+    if args.verbosity > 1:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     if args.verbosity > 0:
         logging.info(args)
