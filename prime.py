@@ -23,7 +23,7 @@ class PrimeNumberPool:
             new_prime += 2
         self.numbers.append(new_prime)
 
-    def Factorize(self, n):
+    def getPrimeFactor(self, n):
         if n == 1:
             return []
         if (self.IsPrime(n)):
@@ -36,10 +36,10 @@ class PrimeNumberPool:
                 myfactors.append(p)
                 while (n % p == 0):
                     n = n//p
-        return myfactors + self.Factorize(n)
+        return myfactors + self.getPrimeFactor(n)
 
     def ReducedFractions(self, a, b):
-        for p in self.Factorize(a):
+        for p in self.getPrimeFactor(a):
             while (a % p == 0 and b % p == 0):
                 a = a/p
                 b = b/p

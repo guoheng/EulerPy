@@ -29,7 +29,7 @@ def Factorize2(n, primes):
     '''
     Check if integer n is a product of two 2-digit numbers
     '''
-    factors = primes.Factorize(n)
+    factors = primes.getPrimeFactor(n)
     max_f = max(factors)
     # step 10 to 99 with max_f as step
     for i in range(1, 99//max_f+1):
@@ -45,7 +45,7 @@ def Factorize3(n, primes):
     '''
     Check if integer n is a product of two 3-digit numbers
     '''
-    factors = primes.Factorize(n)
+    factors = primes.getPrimeFactor(n)
     logging.debug('factorize {} to {}'.format(n, factors))
     max_f = max(factors)
     # step 100 to 999 with max_f as step

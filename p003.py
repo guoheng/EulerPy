@@ -26,7 +26,7 @@ def main(args):
     primes = PrimeNumberPool(maxp)
     ts2 = time.time()
     logging.debug('time for build prime number pool: {}'.format(ts2-ts1))
-    factors = primes.Factorize(number)
+    factors = primes.getPrimeFactor(number)
     logging.debug('factors:{}'.format(factors))
     ts3 = time.time()
     logging.debug('time for factorize: {}'.format(ts3-ts2))
