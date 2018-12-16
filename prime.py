@@ -3,8 +3,8 @@
 # caculate the prime numbers
 
 class PrimeNumberPool:
-    def __init__(self, maxp):
-        self.numbers = [2, 3, 5, 7, 11]
+    def __init__(self, maxp=1000):
+        self.numbers = [2, 3, 5, 7]
         while self.numbers[-1] < maxp:
             self.NewPrime()
 
@@ -30,12 +30,13 @@ class PrimeNumberPool:
             return [n]
         myfactors = []
         for p in self.numbers:
+            if p > n//2:
+                break
             if (n%p == 0):
                 myfactors.append(p)
                 while (n % p == 0):
-                    n = n/p
-            if (n == 1):
-                return myfactors
+                    n = n//p
+        return myfactors + self.Factorize(n)
 
     def ReducedFractions(self, a, b):
         for p in self.Factorize(a):
@@ -58,3 +59,9 @@ class PrimeNumberPool:
                 return True
             assert(p < n)
         assert(False), 'should never be here'
+
+    def NumberOfPrimes(self):
+        return len(self.numbers)
+
+    def GetLargestPrime(self):
+        return self.numbers[-1]
