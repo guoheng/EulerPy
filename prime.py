@@ -42,7 +42,7 @@ class PrimeNumberPool:
                     n = n // p
                     cnt += 1
                 myfactors.append((p, cnt))
-        return myfactors
+        return myfactors + self.Factorize(n)
 
     def getPrimeFactor(self, n):
         myfactors = self.Factorize(n)
