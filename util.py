@@ -69,3 +69,10 @@ def Product(list):
 def IsPalindromic(n):
     sn = str(n)
     return sn == sn[::-1]
+
+def parse_matrix(fname):
+    matrix = []
+    with open(fname) as f:
+        for line in f.readlines():
+            matrix.append([int(x) for x in line.split(',')])
+    return matrix

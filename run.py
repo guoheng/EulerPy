@@ -28,6 +28,11 @@ if __name__ == '__main__':
     if not os.path.isfile(mycode):
         raise NotImplementedError('Problem {} is not implemented.'.format(args.problem))
 
+    logger = logging.getLogger(mymodule)
+    fh = logging.FileHandler('{}.log'.format(mymodule))
+    fh.setLevel(logging.DEBUG)
+    logger.addHandler(fh)
+
     module = importlib.import_module(mymodule, package=None)
     ts1 = time.time()
     module.main(args)
