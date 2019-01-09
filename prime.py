@@ -18,6 +18,8 @@ class PrimeNumberPool:
             self.NewPrime()
 
     def IsPrime(self, n):
+        if n in self.numbers:
+            return True
         while (n > self.numbers[-1]*self.numbers[-1]):
             self.NewPrime()
         for p in self.numbers:
@@ -34,7 +36,7 @@ class PrimeNumberPool:
             return [(n,1)]
         myfactors = []
         for p in self.numbers:
-            if p > n:
+            if p > n//2:
                 break
             if n%p == 0:
                 cnt = 0
@@ -42,11 +44,34 @@ class PrimeNumberPool:
                     n = n // p
                     cnt += 1
                 myfactors.append((p, cnt))
+        if n == 1:
+            return myfactors
         return myfactors + self.Factorize(n)
 
     def getPrimeFactor(self, n):
         myfactors = self.Factorize(n)
         return [x[0] for x in myfactors]
+
+    def getDivisor(self, n):
+        assert(n > 0)
+        if n == 1:
+            return [1]
+
+        divisor = [1]
+        myfactors = self.Factorize(n)
+        p, q = myfactors[0]
+        for i in range(q):
+            divisor.append(divisor[-1]*p)
+            n = n // p
+        if n == 1:
+            return divisor
+        divisor2 = self.getDivisor(n)
+        divisor_set = set(divisor)
+        for p in divisor:
+            for q in divisor2:
+                divisor_set.add(p*q)
+
+        return list(divisor_set)
 
     def ReducedFractions(self, a, b):
         for p in self.getPrimeFactor(a):
