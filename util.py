@@ -9,6 +9,7 @@ from __future__ import with_statement
 
 import random
 from prime import PrimeNumberPool
+import logging
 
 # return a list with unique items
 def Unique(my_list):
@@ -76,3 +77,37 @@ def parse_matrix(fname):
         for line in f.readlines():
             matrix.append([int(x) for x in line.split(',')])
     return matrix
+
+# select n items from l
+def select(n, l):
+    if (n > len(l)): return []
+    if (n == len(l)):
+        return [l]
+    r = []
+    if (n == 1):
+        for i in l:
+            r.append([i])
+        return r
+    r1 = select(n-1, l[1:])
+    for s in r1:
+        s.append(l[0])
+    r = r1
+    return r + select(n, l[1:])
+
+# for problem 103,105
+def check_optimum(s, logger=logging.getLogger(), verbosity=0):
+    if len(s) < 3:
+        return True
+    mysum = {}
+    for i in range(len(s)-1):
+        subset = select(i+1, s)
+        mysum[i] = [sum(x) for x in subset]
+        if len(mysum[i]) > len(set(mysum[i])):
+            return False
+    for i in range(len(s)-2):
+        sum1 = max(mysum[i])
+        sum2 = min(mysum[i+1])
+        if sum1 >= sum2:
+            return False
+
+    return True
