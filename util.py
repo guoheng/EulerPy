@@ -16,13 +16,13 @@ def Unique(my_list):
     return list(set(my_list))
 
 # premutation of a string
-def all_perms(my_str):
-    if len(my_str) <=1:
-        yield my_str
+def all_perms(my_list):
+    if len(my_list) <=1:
+        yield my_list
     else:
-        for perm in all_perms(str[1:]):
+        for perm in all_perms(my_list[1:]):
             for i in range(len(perm)+1):
-                yield perm[:i] + my_str[0:1] + perm[i:]
+                yield perm[:i] + my_list[0:1] + perm[i:]
 
 #
 # Euler's Totient function, φ(n) [sometimes called the phi function], is used
