@@ -107,7 +107,7 @@ def main(args):
         for p in primes.numbers:
             if p in cc['factor']:
                 continue
-            if p*rad_c > c:
+            if p*rad_c > c//2:
                 break
             a = p
             while a < c//2:
@@ -143,7 +143,7 @@ def main(args):
         for p1 in primes.numbers:
             if p1 in cc['factor']:
                 continue
-            if p1*p1*rad_c > c:
+            if p1*p1*rad_c > c//2:
                 break
             for p2 in primes.numbers:
                 if p2 <= p1:
@@ -151,7 +151,7 @@ def main(args):
                 if p2 in cc['factor']:
                     continue
                 rad_a = p1*p2
-                if rad_a*rad_c > c:
+                if rad_a*rad_c > c//2:
                     break
                 # find out the max power of p1/p2
                 m1, m2 = find_max_power(c//2, [p1, p2])
@@ -193,14 +193,14 @@ def main(args):
         for p1 in primes.numbers:
             if p1 in cc['factor']:
                 continue
-            if p1*p1*rad_c > c:
+            if p1*p1*p1*rad_c > c//2:
                 break
             for p2 in primes.numbers:
                 if p2 <= p1:
                     continue
                 if p2 in cc['factor']:
                     continue
-                if p1*p2*p2*rad_c > c:
+                if p1*p2*p2*rad_c > c//2:
                     break
                 for p3 in primes.numbers:
                     if p3 <= p2:
@@ -208,7 +208,7 @@ def main(args):
                     if p3 in cc['factor']:
                         continue
                     rad_a = p1*p2*p3
-                    if rad_a*rad_c > c:
+                    if rad_a*rad_c > c//2:
                         break
                     # find out the max power of p1/p2/p3
                     m1, m2, m3 = find_max_power(c//2, [p1, p2, p3])
