@@ -107,7 +107,7 @@ def main(args):
         for p in primes.numbers:
             if p in cc['factor']:
                 continue
-            if p > c//2:
+            if p*rad_c > c:
                 break
             a = p
             while a < c//2:
@@ -122,13 +122,28 @@ def main(args):
     logger.debug("a has 1 prime factor: {}".format(ts4-ts3))
 
     # a has 2 prime factor
+    # refine candidates
+    candidate_c2 = []
     for cc in candidate_c:
+        rad_c = cc['rad']
+        pab = []
+        for p in primes.numbers:
+            if p not in pc:
+                pab.append(p)
+            if len(pab) == 3:
+                break
+        if rad_c*pab[0]*pab[1]*pab[2] > cc['number']:
+            continue
+        candidate_c2.append(cc)
+    logger.debug("refine number of candidate: {}".format(len(candidate_c2)))
+
+    for cc in candidate_c2:
         c = cc['number']
         rad_c = cc['rad']
         for p1 in primes.numbers:
             if p1 in cc['factor']:
                 continue
-            if p1 > c//2:
+            if p1*p1*rad_c > c:
                 break
             for p2 in primes.numbers:
                 if p2 <= p1:
@@ -136,7 +151,7 @@ def main(args):
                 if p2 in cc['factor']:
                     continue
                 rad_a = p1*p2
-                if rad_a > c/2:
+                if rad_a*rad_c > c:
                     break
                 # find out the max power of p1/p2
                 m1, m2 = find_max_power(c//2, [p1, p2])
@@ -156,21 +171,36 @@ def main(args):
     ts5 = time.time()
     logger.debug("a has 2 prime factor: {}".format(ts5-ts4))
 
+    # refine candidates
+    candidate_c3 = []
+    for cc in candidate_c2:
+        rad_c = cc['rad']
+        pab = []
+        for p in primes.numbers:
+            if p not in pc:
+                pab.append(p)
+            if len(pab) == 4:
+                break
+        if rad_c*pab[0]*pab[1]*pab[2]*pab[3] > cc['number']:
+            continue
+        candidate_c3.append(cc)
+    logger.debug("refine number of candidate: {}".format(len(candidate_c3)))
+
     # a has 3 prime factor
-    for cc in candidate_c:
+    for cc in candidate_c3:
         c = cc['number']
         rad_c = cc['rad']
         for p1 in primes.numbers:
             if p1 in cc['factor']:
                 continue
-            if p1 > c//2:
+            if p1*p1*rad_c > c:
                 break
             for p2 in primes.numbers:
                 if p2 <= p1:
                     continue
                 if p2 in cc['factor']:
                     continue
-                if p1*p2 > c//p1:
+                if p1*p2*p2*rad_c > c:
                     break
                 for p3 in primes.numbers:
                     if p3 <= p2:
@@ -178,7 +208,7 @@ def main(args):
                     if p3 in cc['factor']:
                         continue
                     rad_a = p1*p2*p3
-                    if rad_a > c//2:
+                    if rad_a*rad_c > c:
                         break
                     # find out the max power of p1/p2/p3
                     m1, m2, m3 = find_max_power(c//2, [p1, p2, p3])
