@@ -111,3 +111,12 @@ def check_optimum(s, logger=logging.getLogger(), verbosity=0):
             return False
 
     return True
+
+def gcd(a,b):
+    if a < b:
+        a, b = b, a
+    a1 = a % b
+    if a1 == 0:
+        return b
+    return gcd(b, a1)
+
