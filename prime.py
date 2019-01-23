@@ -18,6 +18,8 @@ class PrimeNumberPool:
             self.NewPrime()
 
     def IsPrime(self, n):
+        if n == 1:
+            return False
         if n in self.numbers:
             return True
         while (n > self.numbers[-1]*self.numbers[-1]):
