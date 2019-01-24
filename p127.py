@@ -19,7 +19,6 @@
 # Find ∑c for c < 120000.
 
 import time
-from util import gcd
 from prime import PrimeNumberPool
 import numpy as np
 import logging
@@ -29,15 +28,6 @@ primes = PrimeNumberPool()
 
 def rad(a):
     return np.product(primes.getPrimeFactor(a))
-
-def abc_hit(a,b):
-    if a >= b:
-        return False
-    c = a+b
-    if gcd(a,b) > 1:
-        return False
-    myrad = rad(a*b*c)
-    return myrad < c
 
 def find_max_power(c, ps):
     # input:
