@@ -112,11 +112,38 @@ def check_optimum(s, logger=logging.getLogger(), verbosity=0):
 
     return True
 
-def gcd(a,b):
+def GCD(a,b):
     if a < b:
         a, b = b, a
     a1 = a % b
     if a1 == 0:
         return b
-    return gcd(b, a1)
+    return GCD(b, a1)
 
+def ExtendedEuclidean(a, b, gcd=0):
+    # return (x, y) such that
+    # x*a + y*b = GCD(a,b)
+    if gcd == 0:
+        gcd = GCD(a,b)
+    swapped = False
+    if a < b:
+        a, b = b, a
+        swapped = True
+    r0 = a; r1 = b
+    s0 = 1; s1 = 0
+    t0 = 0; t1 = 1
+
+    while r1 != 0:
+        q = r0 // r1
+        r2 = r0 - q*r1
+        assert(r2 >= 0 and r2 < r1)
+        s2 = s0 - q*s1
+        t2 = t0 - q*t1
+        s0, s1 = s1, s2
+        t0, t1 = t1, t2
+        r0, r1 = r1, r2
+
+    if swapped:
+        return (t0, s0)
+    else:
+        return (s0, t0)
