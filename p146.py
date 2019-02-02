@@ -21,11 +21,19 @@ logger = logging.getLogger('p146')
 # then p = 11 or p = 101 mod 210
 # thus n = 210k + (10, 80, 130, 200)
 
-def AllPrimes(ns):
-    for n in ns:
-        if not primes.IsPrime(n):
-            return False
-    return True
+#   Let n = qx + r where q is prime.
+#   Then n^2 + s = q^2 x + 2qrx + (r^2 + s).
+#   If q | (r^2 + s), then q | (n^2 + s).
+#   So we do not want those n that satisfy q | ((n%q)^2 + s)
+#   for some prime q and some s in {1, 3, 7, 9, 13, 27}.
+def filter_on_prime(n, ps, cs):
+    for p in ps:
+        r = n % p
+        r2 = r*r
+        for c in cs:
+            if (r2 + c) % p == 0:
+                return True
+    return False
 
 def divisible(n, ps):
     # return true if n is divisible by any number is ps
@@ -53,35 +61,14 @@ def main(args):
         ps = [2,3,5,7,11,13]
         candidates = [10]
         iter_b = 10
-        """
-        candidates = [
-            10,315410,927070,2525870,8146100,16755190,39313460,
-            97387280, 119571820, 121288430, 130116970,
-            139985660, 144774340
-        ]
-        result = []
-        for n in candidates:
-            n2 = n*n
-            check_prime = True
-            for c in range(1, 29, 2):
-                if c in cs:
-                    assert(primes.IsPrime(n2+c))
-                else:
-                    if primes.IsPrime(n2+c):
-                        check_prime = False
-                        logger.debug("{}^2+{} is prime".format(n, c))
-                        break
-            if check_prime:
-                result.append(n)
-        logger.debug(result)
-        logger.info("answer = {}".format(sum(result)))
-        """
+        pfilter = primes.numbers[:1000]
     else:
         N = 150*M
         ps = [2,3,5,7,11,13,17]
         candidates = [10,315410,927070]
-        iter_b = 1
-        
+        iter_b = 3
+        pfilter = primes.numbers[:10000]
+
     pp = 1
     for p in ps:
         pp *= p
@@ -107,38 +94,18 @@ def main(args):
         logger.debug(nr)
 
     logger.debug("run {} iterations, {} tests per iter, total {} tests".format(N//pp+1, len(nr), (N//pp+1)*len(nr)))
-    ts1 = time.time()
-
-    pre_filter = dict()
-    for r in nr:
-        r2 = r*r
-        rs = [(r2+x)%pp for x in cs]
-        pre_filter[r] = []
-        for k in rs:
-            pre_filter[r] += primes.getPrimeFactor(k)
-    for k, v in pre_filter.items():
-        pre_filter[k] = set(v)
-
     ts2 = time.time()
-    logger.debug("setup pre filter {}".format(ts2-ts1))
 
     for i in range(iter_b, N//pp+1):
-        ipf = primes.getPrimeFactor(i)
+        #ipf = primes.getPrimeFactor(i)
         ts1 = ts2
         for r in nr:
-            skip_r = False
-            for p in ipf:
-                if p in pre_filter[r]:
-                    skip_r = True
-                    break
-            if skip_r:
-                if args.verbosity > 2:
-                    logger.debug("skip {}".format(r))
-                continue
-
             n = i*pp+r
             if n > N:
                 break
+            if filter_on_prime(n, pfilter, cs):
+                continue
+
             n2 = n*n
             probably_prime = True
             for c in cs:
@@ -171,7 +138,8 @@ def main(args):
                     break
         if checked:
             result.append(n)
-
+    logger.debug("check took {}s".format(time.time()-ts2))
     logger.debug(result)
+
     answer = sum(result)
     logger.info("answer: {}".format(answer))
