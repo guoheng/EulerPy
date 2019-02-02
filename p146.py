@@ -48,13 +48,6 @@ def main(args):
     M = K*K
     # constant offset
     cs = [1,3,7,9,13,27]
-
-    use_Miller_Rabin = False
-
-    if use_Miller_Rabin:
-        is_pseudo_prime = primes.Miller_Rabin
-    else:
-        is_pseudo_prime = primes.IsPrime
     
     if args.test:
         N = M
@@ -110,7 +103,7 @@ def main(args):
             probably_prime = True
             for c in cs:
                 p = n2 + c
-                if not is_pseudo_prime(p):
+                if not primes.IsPrime(p):
                     probably_prime = False
                     break
             if probably_prime:
