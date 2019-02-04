@@ -47,11 +47,11 @@ def Phi(n, prime):
 #
 # return all digits of a number
 #
-def Digits(n):
+def Digits(n, base=10):
     d = []
     while (n):
-        d.append(n%10)
-        n = n//10
+        d.append(n%base)
+        n = n//base
     return d
 
 # roll a dice d n times
